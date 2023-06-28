@@ -4,8 +4,16 @@ import matplotlib.pyplot as plt
 import openpyxl
 from openpyxl import load_workbook
 from openpyxl.styles import Font, Alignment, Border, Side
-import os
 from openpyxl.utils import get_column_letter, column_index_from_string
+
+from matplotlib import rcParams
+
+config = {
+    "font.family": 'serif',
+    # "font.size": 14,
+    "mathtext.fontset": 'stix',
+}
+rcParams.update(config)
 
 # Setting up the path to the Excel file
 path = r'./工作簿1.xlsx'
@@ -130,7 +138,7 @@ ax1.set_xlabel('Position Date')
 ax1.set_ylabel('Total Notional Amount')
 ax1.set_xticks(x)
 ax1.tick_params(axis='y')
-ax1.legend(loc='upper left', frameon=False)
+ax1.legend(loc='upper left', frameon=False, bbox_to_anchor=(.26, -.15), ncol=5)
 
 # Creating a secondary axis for the weighted average spread
 ax2 = ax1.twinx()
@@ -141,8 +149,8 @@ ax2.tick_params(axis='y')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax1.set_xticklabels(xtick_labels, rotation=30, ha='center')
 # Adjusting the layout with increased spacing
-plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
-
+# plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+fig.tight_layout()
 # Save the chart as an image
 chart_path = 'chart_top5change.png'
 plt.savefig(chart_path)
@@ -160,7 +168,7 @@ fig, ax3 = plt.subplots(figsize=(10, 6))
 convert_million = True
 million = 1
 if convert_million:
-    plt.text(0, 1.01, s='million', transform=ax1.transAxes)
+    plt.text(0, 1.01, s='million', transform=ax3.transAxes)
     million = 1e6
 # Plotting the total notional amount as a bar chart with adjusted width
 x = np.arange(len(df_merged['position date'].tolist()))
@@ -196,7 +204,7 @@ ax3.set_xlabel('Position Date')
 ax3.set_ylabel('Total Notional Amount')
 ax3.set_xticks(x)
 ax3.tick_params(axis='y')
-ax3.legend(loc='upper left', frameon=False)
+ax3.legend(loc='upper left', frameon=False, bbox_to_anchor=(.26, -.15), ncol=5)
 
 # Creating a secondary axis for the weighted average spread
 ax4 = ax3.twinx()
@@ -207,8 +215,8 @@ ax4.tick_params(axis='y')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax3.set_xticklabels(xtick_labels, rotation=30, ha='center')
 # Adjusting the layout with increased spacing
-plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
-
+# plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+fig.tight_layout()
 # Save the chart as an image
 chart_path = 'chart_top5abs.png'
 plt.savefig(chart_path)
@@ -373,7 +381,7 @@ ax1.set_title('Top 5 Clients with Largest Notional Difference')
 ax1.set_xlabel('Position Date')
 
 # 设置图例
-ax1.legend(loc='upper left', frameon=False)
+ax1.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
 
 # 调整图表布局
 fig1.tight_layout()
@@ -395,7 +403,7 @@ ax.set_ylabel('Weighted Average Spread')
 ax.set_xlabel('Position Date')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax.set_xticklabels(xtick_labels, rotation=30, ha='center')
-ax.legend(loc='upper left', frameon=False)
+ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
 fig.tight_layout()
 plt.savefig(t5cs)
 # notional
@@ -408,7 +416,7 @@ ax.set_ylabel('Total Notional Amount')
 ax.set_xlabel('Position Date')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax.set_xticklabels(xtick_labels, rotation=30, ha='center')
-ax.legend(loc='upper left', frameon=False)
+ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
 fig.tight_layout()
 plt.savefig(t5cn)
 
@@ -439,7 +447,7 @@ absolute_spread_table = df_top5.pivot_table(index='position date', columns='clie
 fig2, ax3 = plt.subplots(figsize=(10, 6))
 
 # 设置每个客户的颜色
-# colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
+# colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62828', '#9467bd']
 
 # 绘制每个客户的名义金额
 width = 0.16
@@ -483,7 +491,7 @@ ax3.set_title('Top 5 Clients with Largest Notional Amount on Latest Day')
 ax3.set_xlabel('Position Date')
 
 # 设置图例
-ax3.legend(loc='upper left', frameon=False)
+ax3.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
 
 # 调整图表布局
 fig2.tight_layout()
@@ -505,7 +513,7 @@ ax.set_ylabel('Weighted Average Spread')
 ax.set_xlabel('Position Date')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax.set_xticklabels(xtick_labels, rotation=30, ha='center')
-ax.legend(loc='upper left', frameon=False)
+ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
 fig.tight_layout()
 plt.savefig(t5as)
 # notional
@@ -518,7 +526,7 @@ ax.set_ylabel('Total Notional Amount')
 ax.set_xlabel('Position Date')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax.set_xticklabels(xtick_labels, rotation=30, ha='center')
-ax.legend(loc='upper left', frameon=False)
+ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
 fig.tight_layout()
 plt.savefig(t5an)
 
