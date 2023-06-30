@@ -62,7 +62,7 @@ if convert_million:
 # Plotting the total notional amount as a bar chart with adjusted width
 x = np.arange(len(df_merged['position date'].tolist()))
 labels = df_merged['position date'].tolist()
-ax1.bar(x, (df_merged['axe notional mtm'] / million).tolist(), color='lightblue', width=0.6)
+ax1.bar(x, (df_merged['axe notional mtm'] / million).tolist(), color='lightblue', width=0.6, label='Total notional amount')  # 0630 图例标签
 ax1.set_xlabel('Position Date')
 ax1.set_ylabel('Total Notional Amount')
 ax1.set_xticks(x)
@@ -70,15 +70,16 @@ ax1.tick_params(axis='y')
 
 # Creating a secondary axis for the weighted average spread
 ax2 = ax1.twinx()
-ax2.plot(x, df_merged['weighted_spread'], color='darkblue', marker='o')
+ax2.plot(x, df_merged['weighted_spread'], color='darkblue', marker='o', label='Weighted average spread')  # 0630 图例标签
 ax2.set_ylabel('Weighted Average Spread')
 ax2.tick_params(axis='y')
-
+ax1.legend(frameon=False, bbox_to_anchor=(.5, -.14))  # 0630 图例显示
+ax2.legend(frameon=False, bbox_to_anchor=(.8, -.14))  # 0630 图例显示
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax1.set_xticklabels(xtick_labels, rotation=30, ha='center')
 # Adjusting the layout with increased spacing
-plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
-
+# plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+fig.tight_layout()
 # Save the chart as an image
 chart_path = 'chart_origin.png'
 plt.savefig(chart_path)
@@ -138,14 +139,15 @@ ax1.set_xlabel('Position Date')
 ax1.set_ylabel('Total Notional Amount')
 ax1.set_xticks(x)
 ax1.tick_params(axis='y')
-ax1.legend(loc='upper left', frameon=False, bbox_to_anchor=(.26, -.15), ncol=5)
+ax1.legend(loc='upper left', frameon=False, bbox_to_anchor=(.0, -.21), ncol=1)  # 0630 图例位置
 
 # Creating a secondary axis for the weighted average spread
 ax2 = ax1.twinx()
-ax2.plot(x, df_merged['weighted_spread'], color='darkblue', marker='o')
+ax2.plot(x, df_merged['weighted_spread'], color='darkblue', marker='o', label='Weight average spread')
 ax2.set_ylabel('Weighted Average Spread')
 ax2.tick_params(axis='y')
 
+ax2.legend(frameon=False, bbox_to_anchor=(.262, -.14), ncol=1)  # 0630 图例位置
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax1.set_xticklabels(xtick_labels, rotation=30, ha='center')
 # Adjusting the layout with increased spacing
@@ -204,14 +206,14 @@ ax3.set_xlabel('Position Date')
 ax3.set_ylabel('Total Notional Amount')
 ax3.set_xticks(x)
 ax3.tick_params(axis='y')
-ax3.legend(loc='upper left', frameon=False, bbox_to_anchor=(.26, -.15), ncol=5)
+ax3.legend(loc='upper left', frameon=False, bbox_to_anchor=(0., -.21), ncol=1)  # 0630 图例位置
 
 # Creating a secondary axis for the weighted average spread
 ax4 = ax3.twinx()
-ax4.plot(x, df_merged['weighted_spread'], color='darkblue', marker='o')
+ax4.plot(x, df_merged['weighted_spread'], color='darkblue', marker='o', label='Weight average spread')  # 0630 图例标签
 ax4.set_ylabel('Weighted Average Spread')
 ax4.tick_params(axis='y')
-
+ax4.legend(frameon=False, bbox_to_anchor=(.262, -.14), ncol=1)  # 0630 图例位置
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax3.set_xticklabels(xtick_labels, rotation=30, ha='center')
 # Adjusting the layout with increased spacing
@@ -381,7 +383,7 @@ ax1.set_title('Top 5 Clients with Largest Notional Difference')
 ax1.set_xlabel('Position Date')
 
 # 设置图例
-ax1.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
+ax1.legend(loc='upper left', frameon=False, bbox_to_anchor=(.0, -.14), ncol=1)  # 0630 图例位置
 
 # 调整图表布局
 fig1.tight_layout()
@@ -397,26 +399,26 @@ line chart
 t5cs = 'top5diff_spread.png'
 fig, ax = plt.subplots(figsize=(10, 6))
 for ind, c in enumerate(clients_spread_data):
-    plt.plot(x, c, label=top5_clients_name[ind], color=colors[ind], marker='o')  # , linestyle='dashed')
+    plt.plot(x, c, label=top5_clients_name[ind], color=colors[ind], marker='o')
 ax.set_xticks(x)
 ax.set_ylabel('Weighted Average Spread')
 ax.set_xlabel('Position Date')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax.set_xticklabels(xtick_labels, rotation=30, ha='center')
-ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
+ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.0, -.14), ncol=1)  # 0630 图例位置
 fig.tight_layout()
 plt.savefig(t5cs)
 # notional
 t5cn = 'top5diff_notional.png'
 fig, ax = plt.subplots(figsize=(10, 6))
 for ind, c in enumerate(clients_notional_data):
-    plt.plot(x, c, label=top5_clients_name[ind], color=colors[ind], marker='o')  # , linestyle='dashed')
+    plt.plot(x, c, label=top5_clients_name[ind], color=colors[ind], marker='o')
 ax.set_xticks(x)
 ax.set_ylabel('Total Notional Amount')
 ax.set_xlabel('Position Date')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax.set_xticklabels(xtick_labels, rotation=30, ha='center')
-ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
+ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(0., -.14), ncol=1)  # 0630 图例位置
 fig.tight_layout()
 plt.savefig(t5cn)
 
@@ -491,7 +493,7 @@ ax3.set_title('Top 5 Clients with Largest Notional Amount on Latest Day')
 ax3.set_xlabel('Position Date')
 
 # 设置图例
-ax3.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
+ax3.legend(loc='upper left', frameon=False, bbox_to_anchor=(.0, -.14), ncol=1)  # 0630 图例位置
 
 # 调整图表布局
 fig2.tight_layout()
@@ -507,26 +509,26 @@ line chart
 t5as = 'top5abs_spread.png'
 fig, ax = plt.subplots(figsize=(10, 6))
 for ind, c in enumerate(clients_spread_data):
-    plt.plot(x, c, label=top5_clients_name[ind], color=colors[ind], marker='o')  # , linestyle='dashed')
+    plt.plot(x, c, label=top5_clients_name[ind], color=colors[ind], marker='o')
 ax.set_xticks(x)
 ax.set_ylabel('Weighted Average Spread')
 ax.set_xlabel('Position Date')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax.set_xticklabels(xtick_labels, rotation=30, ha='center')
-ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
+ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.0, -.14), ncol=1)  # 0630 图例位置
 fig.tight_layout()
 plt.savefig(t5as)
 # notional
 t5an = 'top5abs_notional.png'
 fig, ax = plt.subplots(figsize=(10, 6))
 for ind, c in enumerate(clients_notional_data):
-    plt.plot(x, c, label=top5_clients_name[ind], color=colors[ind], marker='o')  # , linestyle='dashed')
+    plt.plot(x, c, label=top5_clients_name[ind], color=colors[ind], marker='o')
 ax.set_xticks(x)
 ax.set_ylabel('Total Notional Amount')
 ax.set_xlabel('Position Date')
 xtick_labels = [x.strftime('%m-%d') for x in labels]
 ax.set_xticklabels(xtick_labels, rotation=30, ha='center')
-ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.28, -.15), ncol=5)
+ax.legend(loc='upper left', frameon=False, bbox_to_anchor=(.0, -.14), ncol=1)  # 0630 图例位置
 fig.tight_layout()
 plt.savefig(t5an)
 

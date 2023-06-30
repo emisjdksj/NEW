@@ -56,7 +56,7 @@ for i, col in enumerate(total_op_market_day.columns):
 # for ind, c in enumerate(markets_op_data):
 #     ax1.bar(x-width/2+ind*width, c, width, label=market_names[ind], color=colors[ind], alpha=.8)
 
-ax1.bar(x, markets_op_data[0], width, color='lightblue', alpha=.8)
+ax1.bar(x, markets_op_data[0], width, color='lightblue', alpha=.8, label='Total OP balance amount')  # 0630 图例标签
 ax1.set_ylabel('Total OP Balance Amount')
 ax1.set_xticks(x)
 ax1.set_xticklabels(labels)
@@ -70,11 +70,13 @@ for col in total_net_market_day.columns:
     markets_net_data.append((total_net_market_day[col]).tolist())
 # for ind, c in enumerate(markets_net_data):
 #     ax2.plot(x, c, color=colors[ind], marker='o', linestyle='dashed')
-ax2.plot(x, markets_net_data[0], marker='o', color='darkblue')
+ax2.plot(x, markets_net_data[0], marker='o', color='darkblue', label='Total net amount')  # 0630 图例标签
 ax2.set_ylabel('Total Net Amount')
 ax1.set_xlabel('Position Date')
 # ax1.legend(loc='upper left', frameon=False, bbox_to_anchor=(.42, -.15), ncol=2)
 ax1.set_title('A')
+ax1.legend(frameon=False, bbox_to_anchor=(.5, -.14))  # 0630 图例显示
+ax2.legend(frameon=False, bbox_to_anchor=(.72, -.14))  # 0630 图例显示
 fig.tight_layout()
 plt.savefig('opbalance_A.png')
 
@@ -83,7 +85,7 @@ fig, ax1 = plt.subplots(figsize=(10, 6))
 if convert2billion:
     plt.text(0. if max_op/1e9 > 1 else .055, 1.01, s='billion', transform=ax1.transAxes)
     billion = 1e9
-ax1.bar(x, markets_op_data[1], width, color='lightblue', alpha=.8)
+ax1.bar(x, markets_op_data[1], width, color='lightblue', alpha=.8, label='Total OP balance amount')  # 0630 图例标签
 ax1.set_ylabel('Total OP Balance Amount')
 ax1.set_xticks(x)
 ax1.set_xticklabels(labels)
@@ -97,11 +99,13 @@ for col in total_net_market_day.columns:
     markets_net_data.append((total_net_market_day[col]).tolist())
 # for ind, c in enumerate(markets_net_data):
 #     ax2.plot(x, c, color=colors[ind], marker='o', linestyle='dashed')
-ax2.plot(x, markets_net_data[1], marker='o', color='darkblue')
+ax2.plot(x, markets_net_data[1], marker='o', color='darkblue', label='Total net amount')  # 0630 图例标签
 ax2.set_ylabel('Total Net Amount')
 ax1.set_xlabel('Position Date')
 # ax1.legend(loc='upper left', frameon=False, bbox_to_anchor=(.42, -.15), ncol=2)
 ax1.set_title('B')
+ax1.legend(frameon=False, bbox_to_anchor=(.5, -.14))  # 0630 图例显示
+ax2.legend(frameon=False, bbox_to_anchor=(.72, -.14))  # 0630 图例显示
 fig.tight_layout()
 plt.savefig('opbalance_B.png')
 # plt.show()
@@ -127,7 +131,7 @@ if convert2billion:
     plt.text(0, 1.01, s='billion', transform=ax1.transAxes)
 x = np.arange(len(df_merged['date'].tolist()))
 labels = df_merged['date'].tolist()
-ax1.bar(x, (df_merged['OP balance']/billion).tolist(), color='lightblue', width=0.6)
+ax1.bar(x, (df_merged['OP balance']/billion).tolist(), color='lightblue', width=0.6, label='Total OP balance amount')  # 0630 图例标签
 ax1.set_xlabel('Position Date')
 ax1.set_ylabel('Total OP Balance Amount')
 ax1.set_xticks(x)
@@ -135,7 +139,7 @@ ax1.tick_params(axis='y')
 
 # Creating a secondary axis for the weighted average spread
 ax2 = ax1.twinx()
-ax2.plot(x, df_merged['net'], color='darkblue', marker='o')
+ax2.plot(x, df_merged['net'], color='darkblue', marker='o', label='Total net amount')  # 0630 图例标签
 ax2.set_ylabel('Total Net Amount')
 ax2.tick_params(axis='y')
 
@@ -144,6 +148,8 @@ ax1.set_xticklabels(xtick_labels, rotation=30, ha='center')
 # Adjusting the layout with increased spacing
 # plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
 plt.title('In Total')
+ax1.legend(frameon=False, bbox_to_anchor=(.5, -.14))  # 0630 图例显示
+ax2.legend(frameon=False, bbox_to_anchor=(.72, -.14))  # 0630 图例显示
 fig.tight_layout()
 # Save the chart as an image
 plt.savefig('./opbalance.png')
