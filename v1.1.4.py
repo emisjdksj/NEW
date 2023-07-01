@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import openpyxl
 from openpyxl import load_workbook
-from openpyxl.styles import Font, Alignment, Border, Side
+from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
 from openpyxl.utils import get_column_letter, column_index_from_string
 
 from matplotlib import rcParams
@@ -86,10 +86,81 @@ plt.savefig(chart_path)
 
 # Create a new worksheet named "Overview"
 ws = wb.create_sheet('Overview')
+
+# Define the cell style
+title_font_bold = Font(bold=True, color='ffffff')
+font_bold = Font(bold=True)
+alignment_center = Alignment(horizontal='center', vertical='center')
+border_thin = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'),
+                     bottom=Side(style='thin'))
+fill = PatternFill(start_color="90C9E6", fill_type='solid')
+
+
+"""
+write table
+"""
+# Write the client difference table to the worksheet
+ws['A1'] = 'Position Date'
+ws['A1'].font = title_font_bold
+# ws_diff.merge_cells('A1:C1')
+ws['A1'].alignment = alignment_center
+ws['A1'].border = border_thin
+ws['A1'].fill = fill
+
+ws['B1'] = 'Total Notional Amount'
+ws['B1'].font = title_font_bold
+ws['B1'].alignment = alignment_center
+ws['B1'].border = border_thin
+ws['B1'].fill = fill
+
+ws['C1'] = 'Weighted average spread'
+ws['C1'].font = title_font_bold
+ws['C1'].alignment = alignment_center
+ws['C1'].border = border_thin
+ws['C1'].fill = fill
+df_merged['position date'] = pd.to_datetime(df_merged["position date"], format="%Y%m%d")
+
+for i in range(len(df_merged['position date'].tolist())):
+    row = i + 2
+    ws[f'A{row}'] = str(df_merged.iloc[i]['position date']).split()[0]
+    ws[f'A{row}'].border = border_thin
+
+    ws[f'B{row}'] = df_merged.iloc[i]['axe notional mtm']
+    ws[f'B{row}'].border = border_thin
+    ws[f'B{row}'].number_format = '#,##0'
+
+    ws[f'C{row}'] = df_merged.iloc[i]['weighted_spread']
+    ws[f'C{row}'].border = border_thin
+    ws[f'C{row}'].number_format = '#,##0'
+
+for col in ws.columns:
+    max_length = 0
+    column = col[0]
+    if column.data_type == 's':
+        column = get_column_letter(column.column)
+    else:
+        column = get_column_letter(column_index_from_string(column.coordinate[:1]))
+    for cell in col:
+        try:
+            if len(str(cell.value)) > max_length:
+                max_length = len(str(cell.value))
+        except:
+            pass
+    adjusted_width = max_length + 2
+    ws.column_dimensions[column].width = adjusted_width
+
 # Add the chart image to the new worksheet
 img = openpyxl.drawing.image.Image(chart_path.replace('\\', '/'))
-img.anchor = 'A1'
+img.anchor = 'E1'
 ws.add_image(img)
+
+
+
+
+
+
+
+
 
 # with top5 change
 # Plotting the chart with adjusted parameters
