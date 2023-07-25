@@ -325,11 +325,33 @@ overall_diff = df_merged['axe notional mtm'].iloc[-1] - df_merged['axe notional 
 
 # Calculate the difference proportion for each client
 client_diff['Difference Proportion'] = client_diff['Notional Difference'] / overall_diff
-
+client_diff['fp'] = client_diff['Notional Difference'] / client_diff['axe notional mtm_first'] * 100
 # Sort and rank the client differences
 client_diff = client_diff.sort_values('Notional Difference', ascending=False).reset_index(drop=True)
-# Show the client difference
-print(client_diff[['client', 'Notional Difference', 'Difference Proportion']])
+
+def auto_(rects):
+    for rect in rects:
+        height = rect.get_height()
+        plt.text(rect.get_x()+rect.get_width()/2., 1.02*height, f'{height:.2f}%', size=10)
+
+width = 0.05
+names = client_diff['client'].tolist()
+fig, ax1 = plt.subplots(figsize=(10, 6))
+for ind, c in enumerate(client_diff['fp']):
+    cm = ax1.bar(ind * .05, c, width, label=names[ind], color=colors[ind], alpha=.8)
+    auto_(cm)
+
+ax1.set_ylabel('percentage')
+ax1.set_xticks([])
+ax1.tick_params(axis='y')
+ax1.legend(frameon=False, bbox_to_anchor=(.1, -.05))  # 0630 图例显示
+# Adjusting the layout with increased spacing
+# plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+fig.tight_layout()
+# Save the chart as an image
+chart_path = 'diff_per.png'
+plt.savefig(chart_path)
+
 
 # Create a new worksheet for the client difference table
 ws_diff = wb.create_sheet('Client Difference')
@@ -389,6 +411,8 @@ for col in ws_diff.columns:
             pass
     adjusted_width = max_length + 2
     ws_diff.column_dimensions[column].width = adjusted_width
+ws_diff.add_image(openpyxl.drawing.image.Image(chart_path), 'A10')
+
 
 # Create a new worksheet named "Top 5 Client (Change)"
 ws_change = wb.create_sheet('Top 5 Client (Change)')
