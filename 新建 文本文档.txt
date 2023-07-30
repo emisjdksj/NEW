@@ -1,0 +1,22 @@
+def auto_(rects):
+    for rect in rects:
+        height = rect.get_height()
+        if height < 0:
+            plt.text(rect.get_x()+rect.get_width()/2., 1.02*height, f'{height:.2%}', ha='center', va='top', size=10)
+        else:
+            plt.text(rect.get_x()+rect.get_width()/2., 1.02*height, f'{height:.2%}', ha='center', va='bottom', size=10)
+
+width = 0.05
+names = client_diff['client'].tolist()
+fig, ax1 = plt.subplots(figsize=(10, 6))
+for ind, c in enumerate(client_diff['fp']):
+    cm = ax1.bar(ind * .05, c, width, label=names[ind], color=colors[ind], alpha=.8)
+    auto_(cm)
+
+ax1.set_ylabel('percentage (%)')
+ax1.set_xticks([])
+ax1.tick_params(axis='y')
+ax1.legend(frameon=False, bbox_to_anchor=(.1, -.05))
+fig.tight_layout()
+chart_path = 'diff_per.png'
+plt.savefig(chart_path)
