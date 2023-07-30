@@ -13,6 +13,12 @@ for ind, c in enumerate(client_diff['fp']):
     cm = ax1.bar(ind * .05, c, width, label=names[ind], color=colors[ind], alpha=.8)
     auto_(cm)
 
+# Create a FuncFormatter object to format the y-axis ticks as percentages
+percent_formatter = ticker.FuncFormatter(lambda x, pos: f'{x:.0%}')
+
+# Set the y-axis tick formatter to the percent_formatter object
+ax1.yaxis.set_major_formatter(percent_formatter)
+
 ax1.set_ylabel('percentage (%)')
 ax1.set_xticks([])
 ax1.tick_params(axis='y')
